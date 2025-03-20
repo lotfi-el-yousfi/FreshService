@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "types": ["vuetify", "vite/client"],
+    "allowJs": true,
+    "skipLibCheck": true
+  }
+}
