@@ -1,30 +1,30 @@
 <script setup>
-import { ref } from 'vue'
-import { useField, useForm } from 'vee-validate'
+import {ref} from 'vue'
+import {useField, useForm} from 'vee-validate'
 
-const { handleSubmit, handleReset } = useForm({
+const {handleSubmit, handleReset} = useForm({
   validationSchema: {
-    name (value) {
+    name(value) {
       if (value?.length >= 2) return true
 
       return 'Name needs to be at least 2 characters.'
     },
-    phone (value) {
+    phone(value) {
       if (/^[0-9-]{7,}$/.test(value)) return true
 
       return 'Phone number needs to be at least 7 digits.'
     },
-    email (value) {
+    email(value) {
       if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
 
       return 'Must be a valid e-mail.'
     },
-    select (value) {
+    select(value) {
       if (value) return true
 
       return 'Select an item.'
     },
-    checkbox (value) {
+    checkbox(value) {
       if (value === '1') return true
 
       return 'Must be checked.'
@@ -49,53 +49,60 @@ const submit = handleSubmit(values => {
 })
 </script>
 <template>
-  <form @submit.prevent="submit">
-    <v-text-field
-        v-model="name.value.value"
-        :counter="10"
-        :error-messages="name.errorMessage.value"
-        label="Name"
-    ></v-text-field>
+  <v-sheet class="mx-auto" width="600">
+    <h2>
+      Add a new ticket
+    </h2>
+    <form @submit.prevent="submit">
+      <v-text-field
+          v-model="name.value.value"
+          :counter="10"
+          :error-messages="name.errorMessage.value"
+          label="Name"
+      ></v-text-field>
 
-    <v-text-field
-        v-model="phone.value.value"
-        :counter="7"
-        :error-messages="phone.errorMessage.value"
-        label="Phone Number"
-    ></v-text-field>
+      <v-text-field
+          v-model="phone.value.value"
+          :counter="7"
+          :error-messages="phone.errorMessage.value"
+          label="Phone Number"
+      ></v-text-field>
 
-    <v-text-field
-        v-model="email.value.value"
-        :error-messages="email.errorMessage.value"
-        label="E-mail"
-    ></v-text-field>
+      <v-text-field
+          v-model="email.value.value"
+          :error-messages="email.errorMessage.value"
+          label="E-mail"
+      ></v-text-field>
 
-    <v-select
-        v-model="select.value.value"
-        :error-messages="select.errorMessage.value"
-        :items="items"
-        label="Select"
-    ></v-select>
+      <v-select
+          v-model="select.value.value"
+          :error-messages="select.errorMessage.value"
+          :items="items"
+          label="Select"
+      ></v-select>
 
-    <v-checkbox
-        v-model="checkbox.value.value"
-        :error-messages="checkbox.errorMessage.value"
-        label="Option"
-        type="checkbox"
-        value="1"
-    ></v-checkbox>
+      <v-checkbox
+          v-model="checkbox.value.value"
+          :error-messages="checkbox.errorMessage.value"
+          label="Option"
+          type="checkbox"
+          value="1"
+      ></v-checkbox>
 
-    <v-btn
-        class="me-4"
-        type="submit"
-    >
-      add ticket
-    </v-btn>
+      <v-btn
+          class="me-4"
+          type="submit"
+          color="success"
+      >
+        add ticket
+      </v-btn>
 
-    <v-btn @click="handleReset">
-      clear
-    </v-btn>
-  </form>
+      <v-btn @click="handleReset"  outlined color="danger">
+        clear
+      </v-btn>
+    </form>
+
+  </v-sheet>
 </template>
 
 <style scoped>
