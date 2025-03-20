@@ -1,107 +1,85 @@
 <script setup>
 import {ref} from 'vue'
-import {useField, useForm} from 'vee-validate'
 
-const {handleSubmit, handleReset} = useForm({
-  validationSchema: {
-    name(value) {
-      if (value?.length >= 2) return true
+const form = ref(null);
 
-      return 'Name needs to be at least 2 characters.'
-    },
-    phone(value) {
-      if (/^[0-9-]{7,}$/.test(value)) return true
+const ticket = ref({});
 
-      return 'Phone number needs to be at least 7 digits.'
-    },
-    email(value) {
-      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+const priorities = ['Low', 'Medium', 'High', 'Critical'];
+const statuses = ['New', 'In Progress', 'Resolved', 'Closed'];
 
-      return 'Must be a valid e-mail.'
-    },
-    select(value) {
-      if (value) return true
+const rules = {
+  required: value => !!value || 'This field is required',
+};
 
-      return 'Select an item.'
-    },
-    checkbox(value) {
-      if (value === '1') return true
+const submitForm = async () => {
+  const {valid} = await form.value.validate();
 
-      return 'Must be checked.'
-    },
-  },
-})
-const name = useField('name')
-const phone = useField('phone')
-const email = useField('email')
-const select = useField('select')
-const checkbox = useField('checkbox')
-
-const items = ref([
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 4',
-])
-
-const submit = handleSubmit(values => {
-  alert(JSON.stringify(values, null, 2))
-})
+  if (valid) {
+    console.log('Form submitted:', ticket.value);
+    // Perform API call or further actions
+  }
+};
 </script>
 <template>
   <v-sheet class="mx-auto" width="600">
     <h2>
       Add a new ticket
     </h2>
-    <form @submit.prevent="submit">
-      <v-text-field
-          v-model="name.value.value"
-          :counter="10"
-          :error-messages="name.errorMessage.value"
-          label="Name"
-      ></v-text-field>
+    <v-form ref="form">
+      <!-- Title -->
 
-      <v-text-field
-          v-model="phone.value.value"
-          :counter="7"
-          :error-messages="phone.errorMessage.value"
-          label="Phone Number"
-      ></v-text-field>
 
-      <v-text-field
-          v-model="email.value.value"
-          :error-messages="email.errorMessage.value"
-          label="E-mail"
-      ></v-text-field>
+      <v-text-field v-model="objet" label="objet"></v-text-field>
+      <v-text-field v-model="demandeur" label="demandeur"></v-text-field>
+      <v-select v-model="etat" label="etat" :items="['Ouvert', 'En cours', 'Résolu', 'Fermé', 'En attente']"></v-select>
+      <v-select v-model="statut" label="statut" :items="['Nouveau', 'En cours', 'Résolu', 'Fermé']"></v-select>
+      <v-select v-model="priorite" label="priorite" :items="['Basse', 'Moyenne', 'Haute', 'Critique']"></v-select>
+      <v-text-field v-model="assigneA" label="assigneA  because it may be null"></v-text-field>
+      <v-text-field v-model="detailsStatut" label="detailsStatut"></v-text-field>
+      <v-text-field v-model="departement" label="departement"></v-text-field>
+      <v-text-field v-model="source" label="source"></v-text-field>
 
-      <v-select
-          v-model="select.value.value"
-          :error-messages="select.errorMessage.value"
-          :items="items"
-          label="Select"
-      ></v-select>
+      <v-text-field v-model="dateCreation" label="dateCreation"></v-text-field>
+      <v-text-field v-model="dateDerniereModification" label="dateDerniereModification"></v-text-field>
+      <v-text-field v-model="echeance" label="echeance"></v-text-field>
+      <v-text-field v-model="dateFermeture" label="dateFermeture"></v-text-field>
+      <v-select v-model="statutApprobation" label="statutApprobation"
+                :items="['Approuvé', 'En attente', 'Rejeté']"></v-select>
 
-      <v-checkbox
-          v-model="checkbox.value.value"
-          :error-messages="checkbox.errorMessage.value"
-          label="Option"
-          type="checkbox"
-          value="1"
-      ></v-checkbox>
+      <v-text-field v-model="dateDebutPlanifiee" label="dateDebutPlanifiee"></v-text-field>
+      <v-text-field v-model="dateFinPlanifiee" label="dateFinPlanifiee"></v-text-field>
+      <v-text-field v-model="effortPlanifie" label="effortPlanifie"></v-text-field>
 
-      <v-btn
-          class="me-4"
-          type="submit"
-          color="success"
-      >
-        add ticket
+      <v-text-field v-model="typeAssociation" label="typeAssociation"></v-text-field>
+      <v-text-field v-model="emplacementDemandeur" label="emplacementDemandeur"></v-text-field>
+      <v-checkbox v-model="demandeurVip" label="demandeurVip  for VIP status"></v-checkbox>
+      <v-text-field v-model="dateResolution" label="dateResolution"></v-text-field>
+
+      <v-select v-model="impact" label="impact" :items="['Faible', 'Moyen', 'Élevé', 'Critique']"></v-select>
+      <v-select v-model="urgence" label="urgence" :items="['Faible', 'Moyenne', 'Élevée', 'Critique']"></v-select>
+
+      <v-text-field v-model="categorie" label="categorie"></v-text-field>
+      <v-text-field v-model="sousCategorie" label="sousCategorie"></v-text-field>
+      <v-text-field v-model="element" label="element"></v-text-field>
+
+      <v-checkbox v-model="beneficiaire" label="beneficiaire  If different from demandeur"></v-checkbox>
+      <v-text-field v-model="telephone" label="telephone"></v-text-field>
+      <v-text-field v-model="categorisationClient" label="categorisationClient"></v-text-field>
+      <v-text-field v-model="beneficiaireIncident" label="beneficiaireIncident"></v-text-field>
+
+      <v-text-field v-model="majorIncidentType" label="majorIncidentType"></v-text-field>
+      <v-text-field v-model="impactedLocations" label="impactedLocations"></v-text-field>
+      <v-text-field v-model="noOfCustomersImpacted" label="noOfCustomersImpacted"></v-text-field>
+
+      <v-text-field v-model="composants" label="composants"></v-text-field>
+      <v-text-field v-model="servicesConcernes" label="servicesConcernes"></v-text-field>
+
+      <!-- Submit Button -->
+      <v-btn color="primary" block class="mt-3" @click="submitForm">
+        Submit Ticket
       </v-btn>
-
-      <v-btn @click="handleReset"  outlined color="danger">
-        clear
-      </v-btn>
-    </form>
-
+    </v-form>
   </v-sheet>
 </template>
 

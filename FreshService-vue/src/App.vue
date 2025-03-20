@@ -28,20 +28,18 @@
           location="left"
           temporary
       >
-        <v-list disabled>
+        <v-list density="compact">
           <v-list-subheader>REPORTS</v-list-subheader>
 
           <v-list-item
+              @click="$router.push(item.link)"
               v-for="(item, i) in items"
               :key="i"
+              :value="item"
+              color="primary"
           >
             <template v-slot:prepend>
-              <v-btn
-              >
-
-                <v-icon @click="$router.push(item.link)"
-                        :icon="item.icon"></v-icon>
-              </v-btn>
+              <v-icon :icon="item.icon"></v-icon>
             </template>
 
             <v-list-item-title v-text="item.text"></v-list-item-title>
@@ -60,16 +58,16 @@ import {ref, watch} from 'vue'
 import $router from "./router";
 
 const items = [
-  {text: 'Real-Time', link: "/", icon: 'mdi-clock'},
-  {text: 'Audience', link: "/", icon: 'mdi-account'},
-  {text: 'Conversions', link: "/", icon: 'mdi-flag'},
-  {text: 'Conversions', link: "/", icon: 'mdi-flag'},
-  {text: 'Conversions', link: "/", icon: 'mdi-flag'},
-  {text: 'Conversions', link: "/", icon: 'mdi-flag'},
-  {text: 'Conversions', link: "/", icon: 'mdi-flag'},
-  {text: 'Conversions', link: "/", icon: 'mdi-flag'},
-  {text: 'Conversions', link: "/", icon: 'mdi-flag'},
-  {text: 'Conversions', link: "/", icon: 'mdi-flag'},
+  {text: 'ticket list', link: "/list-ticket", icon: 'mdi-clock'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
+  {text: 'comming soon', link: "/", icon: 'mdi-stop'},
 ]
 const drawer = ref(false)
 const group = ref(null)
